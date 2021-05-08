@@ -18,9 +18,9 @@ router.get("/", (req, res) => {
           (fixture) => fixture.lighting_technology_used === req.query.technology
         );
 
-      res.json({
-        products: paginate(products, req.query.page_size, req.query.page_number),
-      });
+      res.json(
+        paginate(products, req.query.page_size, req.query.page_number),
+      );
     })
     .catch((err) => {
       res.status(404).json({ message: err.toString() });
