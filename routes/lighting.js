@@ -16,17 +16,14 @@ router.get("/", (req, res) => {
     url: process.env.API_URL + "wyt9-72bp.json",
     params: {
       $limit: req.query.page_size,
+      lighting_technology_used: "LED"
     },
     headers: {
       "X-App-Token": process.env.API_TOKEN,
     },
   })
     .then((response) => {
-      const products = response.data.filter(
-        (fixture) => fixture.lighting_technology_used === "LED"
-      );
-        
-      res.json(products);
+      res.json(response.data);
     })
     .catch((err) => {
       res.status(404).json({ message: err.toString() });
