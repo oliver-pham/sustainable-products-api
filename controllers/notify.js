@@ -4,28 +4,40 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 function emailTemplate(category, products) {
     let body = `<h1>${category}</h1><ol>`;
-
-    let list = products.reduce((productList, product) => {
-        return (
-          productList +
-          `
+    if (products.length > 0) {
+        let list = products.reduce((productList, product) => {
+          return (
+            productList +
+            `
             <li>
                 <p>Brand Name: ${product.brand_name}</p>
                 <p>Model Name: ${product.model_name}</p>
             </li>
         `
-        );
-    }, "");
+          );
+        }, "");
 
-    return body + list + "</ol>";
+        return body + list + "</ol>";
+    }
+    else return body + "</ol>";
 }
 
 
 function notify(destination, suggestions) {
-    const template = suggestions.reduce(
-        (content, suggestion) => content + emailTemplate(suggestion.category, suggestion.products),
-        ""
-    );
+    var template = "";
+
+    if (suggestions.length > 0) {
+        template = suggestions.reduce(
+          (content, suggestion) => {
+              return (
+                content +
+                emailTemplate(suggestion.category, suggestion.products)
+              );
+          },
+          ""
+        );
+    }
+    
     const msg = {
       to: destination,
       from: process.env.SENDGRID_SENDER,

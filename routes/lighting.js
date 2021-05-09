@@ -28,7 +28,7 @@ router.post("/", (req, res) => {
       res.json({ message: "Recommendations have been sent to your email!"});
     })
     .catch((err) => {
-      res.status(404).json({ message: err.toString() });
+      res.status(404).json({ message: "Cannot send recommendations!" });
     });
 });
 

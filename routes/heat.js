@@ -3,6 +3,7 @@ var express = require("express");
 var axios = require("axios");
 var router = express.Router();
 var paginate = require("../utils/paginate");
+var notify = require("../controllers/notify");
 
 
 async function getMostEfficientFurnaces(page_size) {
@@ -62,12 +63,12 @@ async function getMostEfficientHeatpumps(page_size) {
 }
 
 /**
- * GET /heat?
+ * POST /heat?
  *
  * @param page_size the number of products fetched per page
  * @public
  */
-router.get(
+router.post(
   "/",
   async (req, res, next) => {
     try {
@@ -96,10 +97,26 @@ router.get(
       if (req.query.heatpump) {
         req.body.heatpumps = await getMostEfficientHeatpumps(req.query.page_size);
       }
+      console.log(req.body.furnaces, req.body.boilers);
       
-      res.json({ furnaces: req.body.furnaces, boilers: req.body.boilers, heat_pumps: req.body.heatpumps });
+      notify(req.body.email, [
+        {
+          category: "Furnace",
+          products: req.body.furnaces,
+        },
+        {
+          category: "Boiler",
+          products: req.body.boilers,
+        },
+        {
+          category: "Heat Pumps",
+          products: req.body.heatpumps,
+        },
+      ]);
+
+      res.json({ message: "Recommendations have been sent to your email!" });
     } catch (error) {
-      res.status(404).json({ message: err.toString() });
+      res.status(404).json({ message: "Cannot send recommendations!" });
     }
   }
 );
