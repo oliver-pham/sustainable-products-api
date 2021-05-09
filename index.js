@@ -11,7 +11,7 @@ require("dotenv").config();
 
 var indexRouter = require('./routes/index');
 var lightingRouter = require('./routes/lighting');
-var hvacRouter = require('./routes/hvac');
+var heatRouter = require('./routes/heat');
 
 var app = express();
 var PORT = process.env.PORT || 8080;
@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/lighting', lightingRouter);
-app.use('/hvac', hvacRouter);
+app.use('/heat', heatRouter);
 
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
