@@ -2,28 +2,30 @@ require("dotenv").config();
 var express = require('express');
 var axios = require('axios');
 var router = express.Router();
+var notify = require('../controllers/notify');
 
 /**
- * GET /lighting?
+ * POST /lighting
  * 
  * @param technology "LED" (light emitting diode), "CFL" (compact fluorescent light ) or "halogen"
  * @param page_size the number of products fetched per page
  * @public
  */
-router.get("/", (req, res) => {
+router.post("/", (req, res) => {
   axios({
     method: "GET",
     url: process.env.API_URL + "wyt9-72bp.json",
     params: {
-      $limit: req.query.page_size,
+      $limit: 3,
       lighting_technology_used: "LED"
     },
     headers: {
       "X-App-Token": process.env.API_TOKEN,
     },
   })
-    .then((response) => {
-      res.json(response.data);
+    .then((response) => {      
+      notify(req.body.email, "Product Recommendation", "Hello");
+      res.json({ message: "Recommendations have been sent to your email!"});
     })
     .catch((err) => {
       res.status(404).json({ message: err.toString() });

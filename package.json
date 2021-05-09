@@ -7,7 +7,7 @@
     "start": "node index"
   },
   "dependencies": {
-    "@trycourier/courier": "^2.3.0",
+    "@sendgrid/mail": "^7.4.4",
     "axios": "^0.21.1",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
@@ -15,7 +15,8 @@
     "dotenv": "^9.0.0",
     "express": "~4.16.1",
     "helmet": "^4.6.0",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "sendgrid": "^5.2.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
