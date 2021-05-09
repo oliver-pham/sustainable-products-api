@@ -7,6 +7,7 @@
     "start": "node index"
   },
   "dependencies": {
+    "@trycourier/courier": "^2.3.0",
     "axios": "^0.21.1",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
