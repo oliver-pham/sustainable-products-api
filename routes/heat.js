@@ -67,17 +67,41 @@ async function getMostEfficientHeatpumps(page_size) {
  * @param page_size the number of products fetched per page
  * @public
  */
-router.get("/", async (req, res) => {
-  try {
-    const furnaces = await getMostEfficientFurnaces(req.query.page_size);
-    const boilers = await getMostEfficientBoilers(req.query.page_size);
-    const heatpumps = await getMostEfficientHeatpumps(req.query.page_size);
+router.get(
+  "/",
+  async (req, res, next) => {
+    try {
+      if (req.query.furnace) {
+        req.body.furnaces = await getMostEfficientFurnaces(req.query.page_size);
+      }
 
-    res.json({ furnaces: furnaces, boilers: boilers, heat_pumps: heatpumps });
-  } catch (error) {
-    res.status(404).json({ message: err.toString() });
+      next();
+    } catch (error) {
+      res.status(404).json({ message: err.toString() });
+    }
+  },
+  async (req, res, next) => {
+    try {
+      if (req.query.boiler) {
+        req.body.boilers = await getMostEfficientBoilers(req.query.page_size);
+      }
+
+      next();
+    } catch (error) {
+      res.status(404).json({ message: err.toString() });
+    }
+  },
+  async (req, res) => {
+    try {
+      if (req.query.heatpump) {
+        req.body.heatpumps = await getMostEfficientHeatpumps(req.query.page_size);
+      }
+      
+      res.json({ furnaces: req.body.furnaces, boilers: req.body.boilers, heat_pumps: req.body.heatpumps });
+    } catch (error) {
+      res.status(404).json({ message: err.toString() });
+    }
   }
-  
-});
+);
 
 module.exports = router;
