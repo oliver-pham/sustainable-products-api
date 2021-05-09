@@ -24,7 +24,7 @@ router.post("/", (req, res) => {
     },
   })
     .then((response) => {      
-      notify(req.body.email, "Product Recommendation", "Hello");
+      notify(req.body.email, [{ category: "Lighting", products: response.data }]);
       res.json({ message: "Recommendations have been sent to your email!"});
     })
     .catch((err) => {
